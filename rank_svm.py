@@ -14,17 +14,19 @@ C - [C_O;C_S] -> training error penalization vector for each preference pair
 w - weight vector to be learnt
 '''
 
-A = [O;S]
-C = [C_O;C_S]
-X = #fecture vector
+def rank_svm(X, S, O, C_S, C_O):
+    A = np.concatenate(O, S)
+    C = np.concatenate(C_O, C_S)
 
-constraint1 = [np.ones([O.shape[0],1])] - O*(X*w)
-constraint2 = S*(X*w) - [zeros([S.shape[0],1])]
-constraints = [constraint1;constraint2]
-obj = (np.transpose(w).dot(w))/2 + sum(C.*constraints.^2) #minimize this function
+    w = variable(X.shape[1]) #X.shape[1] = d
+    constraint1 = [np.ones([O.shape[0],1])] - (O*X)*w
+    constraint2 = (S*X)*w - [zeros([S.shape[0],1])]
+    constraints = np.concatenate(constraint1, constraint2)
+    obj = (np.transpose(w).dot(w))/2 + sum(np.multiply( np.multiply(C, constraints), constraints ) ) #minimize this function
 
-epsilon = variable(constraint1.shape[0])
-gamma = variable(constraint2.shape[0])
-w = variable(X.shape[1]) #X.shape[1] = d
+    epsilon = variable(constraint1.shape[0])
+    gamma = variable(constraint2.shape[0])
 
-op(obj,[constraint1 <= epsilon, constraint2 <= gamma, constraint2 >= -gamma]).solve()
+    opt = op(obj,[constraint1 <= epsilon, constraint2 <= gamma, constraint2 >= -gamma])
+    opt.solve()
+    return opt, w
