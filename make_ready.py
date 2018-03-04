@@ -1,6 +1,6 @@
 import numpy as np
-from cvxopt import spmatrix
-#from rank_svm import *
+from scipy.sparse import csr_matrix
+from rank_svm import *
 
 datadict = np.load('datadict.npy').item()
 X = datadict['feat']
@@ -56,12 +56,12 @@ for idx, attr in enumerate(datadict['attribute_names']):
                 O_cnt += 1
 
 
-    S = spmatrix(S_value, S_row, S_column, (S_cnt, datadict['feat'].shape[0]) )
-    O = spmatrix(O_value, O_row, O_column, (O_cnt, datadict['feat'].shape[0]) )
+    S = csr_matrix((S_value, (S_row, S_column)),(S_cnt, datadict['feat'].shape[0]))
+    O = csr_matrix((O_value, (O_row, O_column)),(O_cnt, datadict['feat'].shape[0]))
     C_O = np.ones(O_cnt)
     C_S = np.ones(S_cnt)
     print O_cnt, S_cnt
-#    opt, w = rank_svm(X, S, O, C_S, C_O)
-#    print opt, w
+    opt, w = rank_svm(X, S, O, C_S, C_O)
+    print opt, w
     # now train ranksvm for only one attribute, we can extend it later for all attribute
     break
