@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 from scipy.sparse import csr_matrix
 from rank_svm import *
 
@@ -27,8 +28,8 @@ for idx, attr in enumerate(datadict['attribute_names']):
         for j, im2_lab in enumerate(datadict['class_labels'][i+1:]):
             im2_lab -= 1
             rnum = np.random.rand()
-            if rnum > 0.002:
-                continue
+            # if rnum > 0.02:
+            #     continue
             if cat_ordering[im1_lab] == cat_ordering[im2_lab]:
                 # print i, im1_lab, j, im2_lab
                 S_row.append(S_cnt)
@@ -58,10 +59,12 @@ for idx, attr in enumerate(datadict['attribute_names']):
 
     S = csr_matrix((S_value, (S_row, S_column)),(S_cnt, datadict['feat'].shape[0]))
     O = csr_matrix((O_value, (O_row, O_column)),(O_cnt, datadict['feat'].shape[0]))
-    C_O = np.ones(O_cnt)
-    C_S = np.ones(S_cnt)
-    print O_cnt, S_cnt
-    opt, w = rank_svm(X, S, O, C_S, C_O)
-    print opt, w
+    C_O = scipy.matrix(0.1 * np.ones([O_cnt, 1]))
+    C_S = scipy.matrix(0.1 * np.ones([S_cnt, 1]))
+    X = scipy.matrix(X)
+
+    w = rank_svm(X, S, O, C_S, C_O)
+    #print w
+    #print w.shape
     # now train ranksvm for only one attribute, we can extend it later for all attribute
     break
