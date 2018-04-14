@@ -2,6 +2,7 @@ import numpy as np
 import scipy
 from scipy.sparse import csr_matrix
 from rank_svm import *
+from scipy.io import savemat
 
 datadict = np.load('datadict.npy').item()
 X = datadict['feat']
@@ -24,12 +25,12 @@ for idx, attr in enumerate(datadict['attribute_names']):
     O_value = []
     O_cnt = 0
     for i, im1_lab in enumerate(datadict['class_labels']):
-        if datadict['used_for_training'][i]:
+        if not datadict['used_for_training'][i]:
             continue
 
         im1_lab -= 1
         for j, im2_lab in enumerate(datadict['class_labels'][i+1:]):
-            if datadict['used_for_training'][i]:
+            if not datadict['used_for_training'][i]:
                 continue
             im2_lab -= 1
             # rnum = np.random.rand()
@@ -76,8 +77,13 @@ for idx, attr in enumerate(datadict['attribute_names']):
     C_O = scipy.matrix(0.1 * np.ones([O_cnt, 1]))
     C_S = scipy.matrix(0.1 * np.ones([S_cnt, 1]))
     X = scipy.matrix(X)
-    w = rank_svm(X, S, O, C_S, C_O)
-    np.save("weights/weights_%d_%s" % (idx + 1, datadict['attribute_names'][idx]), w)
+    savemat("X.mat",{'X':X});
+    savemat("S.mat",{'S':S});
+    savemat("O.mat",{'O':O});
+    savemat("C_O.mat",{'C_O':C_O});
+    savemat("C_S.mat",{'C_S':C_S});
+    #w = rank_svm(X, S, O, C_S, C_O)
+    #np.save("weights/weights_%d_%s" % (idx + 1, datadict['attribute_names'][idx]), w)
     #print w
     #print w.shape
     # now train ranksvm for only one attribute, we can extend it later for all attribute
