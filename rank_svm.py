@@ -54,8 +54,8 @@ def rank_svm(X_, S_, O_, C_S, C_O):
 
     # opt
     max_itr = 10
-    prec = 1e-7
-    cg_prec = 1e-7
+    prec = 1e-8
+    cg_prec = 1e-8
     cg_max_itr = 20
 
     global X

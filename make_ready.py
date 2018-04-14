@@ -24,12 +24,12 @@ for idx, attr in enumerate(datadict['attribute_names']):
     O_value = []
     O_cnt = 0
     for i, im1_lab in enumerate(datadict['class_labels']):
-        if not datadict['used_for_training'][i]:
+        if datadict['used_for_training'][i]:
             continue
 
         im1_lab -= 1
         for j, im2_lab in enumerate(datadict['class_labels'][i+1:]):
-            if not datadict['used_for_training'][i]:
+            if datadict['used_for_training'][i]:
                 continue
             im2_lab -= 1
             # rnum = np.random.rand()
