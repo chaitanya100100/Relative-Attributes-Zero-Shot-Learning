@@ -1,0 +1,16 @@
+python compare_two.py JaredLeto_125.jpg CliveOwen_23.jpg Male
+python compare_two.py AlexRodriguez_38.jpg MileyCyrus_149.jpg Male
+python compare_two.py CliveOwen_23.jpg ScarlettJohansson_162.jpg Male
+
+
+python compare_two.py AlexRodriguez_40.jpg HughLaurie_222.jpg Smiling
+python compare_two.py CliveOwen_132.jpg MileyCyrus_369.jpg Smiling
+python compare_two.py ScarlettJohansson_162.jpg ViggoMortensen_135.jpg Smiling
+
+
+python compare_two.py ScarlettJohansson_176.jpg ViggoMortensen_24.jpg PointyNose
+python compare_two.py HughLaurie_63.jpg AlexRodriguez_146.jpg PointyNose
+
+python compare_two.py CliveOwen_170.jpg ZacEfron_258.jpg VisibleForehead
+
+python compare_two.py CliveOwen_170.jpg MileyCyrus_1262.jpg RoundFace
